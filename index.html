@@ -8,11 +8,53 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <p>Bacons: <span id="bacons">0</span></p>
-    <img src="images/pig.png" alt="a clickable pig" width="300px" height="300px" onclick="addBacons(clickingPower)">
+    <div class="sectionLeft unselectable">
+        <div class="baconContainer">
+            <span id="bacons">0</span> bacons <br>
+            <span id="baconspersecond">0</span> bacons per second
+        </div>
+        <br>
+        <div class="clickerContainer">
+            <img src="images/pig.png" alt="a clickable pig" width="300px" height="300px" onclick="addBacons(clickingPower)">
+        </div>
 
-    <button onclick="buyCursor()">Cursor [<span id="cursorcost">15</span>] -- <span id="cursors">0</span></button>
-    <button onclick="buyFarmer()">Farmer [<span id="farmercost">100</span>] -- <span id="farmers">0</span></button>
+        <div class="sectionFooter">
+            <h5>Pig Clicker</h5>
+        </div>
+    </div>
+
+    <div class="sectionRight unselectable">
+        <table class="shopButton" onclick="buyCursor()">
+            <tr>
+                <td id="image"><img src="images/cursor.png" alt="a photo of a cursor, click to buy"></td>
+                <td id="nameAndCost">
+                    <p>Cursor</p>
+                    <p><span id="cursorcost">15</span> bacons</p>
+                </td>
+                <td id="amount"><span id="cursors">0</span></td>
+            </tr>
+        </table>
+        <table class="shopButton" onclick="buyPan()">
+            <tr>
+                <td id="image"><img src="images/pan.png" alt="a photo of a pan, click to buy"></td>
+                <td id="nameAndCost">
+                    <p>Pan</p>
+                    <p><span id="pancost">100</span> bacons</p>
+                </td>
+                <td id="amount"><span id="pans">0</span></td>
+            </tr>
+        </table>
+        <table class="shopButton" onclick="buyFarmer()">
+            <tr>
+                <td id="image"><img src="images/farmer.png" alt="a photo of a farmer, click to buy"></td>
+                <td id="nameAndCost">
+                    <p>Farmer</p>
+                    <p><span id="farmercost">1000</span> bacons</p>
+                </td>
+                <td id="amount"><span id="farmers">0</span></td>
+            </tr>
+        </table>
+    </div>
 
     <script src="script.js"></script>
 </body>
