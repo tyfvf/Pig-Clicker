@@ -57,6 +57,53 @@ function updateBaconsPerSecond() {
     document.getElementById('baconspersecond').textContent = baconsPerSecond
 }
 
+function saveGame() {
+    let gameSave = {
+        bacons: bacons,
+        clickingPower: clickingPower,
+        cursorCost: cursorCost,
+        cursors: cursors,
+        panCost: panCost,
+        pans: pans,
+        farmerCost: farmerCost,
+        farmers: farmers
+    }
+
+    localStorage.setItem('gameSave', JSON.stringify(gameSave))
+}
+
+function loadGame() {
+    let savedGame = JSON.parse(localStorage.getItem('gameSave'))
+    if (typeof savedGame.bacons !== 'undefined') bacons = savedGame.bacons
+    if (typeof savedGame.clickingPower !== 'undefined') clickingPower = savedGame.clickingPower
+    if (typeof savedGame.cursorCost !== 'undefined') cursorCost = savedGame.cursorCost
+    if (typeof savedGame.cursors !== 'undefined') cursors = savedGame.cursors
+    if (typeof savedGame.panCost !== 'undefined') panCost = savedGame.panCost
+    if (typeof savedGame.pans !== 'undefined') pans = savedGame.pans
+    if (typeof savedGame.farmerCost !== 'undefined') farmerCost = savedGame.farmerCost
+    if (typeof savedGame.farmers !== 'undefined') farmers = savedGame.farmers
+}
+
+function resetGame() {
+    if (confirm('Are you sure you want to reset your game? ')){
+        let gameSave = {}
+        localStorage.setItem('gameSave', JSON.stringify(gameSave))
+        location.reload()
+    }
+}
+
+window.onload = function () {
+    loadGame()
+    updateBaconsPerSecond()
+    document.getElementById("bacons").textContent = bacons
+    document.getElementById("cursorcost").textContent = cursorCost
+    document.getElementById("cursors").textContent = cursors
+    document.getElementById("pancost").textContent = panCost
+    document.getElementById("pans").textContent = pans
+    document.getElementById("farmercost").textContent = farmerCost
+    document.getElementById("farmers").textContent = farmers
+}
+
 setInterval(function () {
     bacons += cursors
     bacons += pans * 5
@@ -64,4 +111,15 @@ setInterval(function () {
     document.getElementById("bacons").textContent = bacons
 
     document.title = bacons + ' bacons - Pig Clicker'
-}, 1000) // 1sec
+}, 1000) // 1 sec
+
+setInterval(function () {
+    saveGame()
+}, 30000) // 30 sec
+
+document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.key == 's') { //ctrl + s
+        event.preventDefault()
+        saveGame()
+    }
+}, false)

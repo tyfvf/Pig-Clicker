@@ -77,6 +77,10 @@
     margin-top: 20%;
 }
 
+.sectionFooter button {
+    cursor: pointer;
+}
+
 .unselectable {
     -webkit-user-select: none;
     -moz-user-select: none;
