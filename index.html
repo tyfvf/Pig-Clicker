@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pig Clicker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p>Bacons: <span id="bacons">0</span></p>
+    <img src="images/pig.png" alt="a clickable pig" width="300px" height="300px" onclick="addBacons(clickingPower)">
+
+    <button onclick="buyCursor()">Cursor [<span id="cursorcost">15</span>] -- <span id="cursors">0</span></button>
+    <button onclick="buyFarmer()">Farmer [<span id="farmercost">100</span>] -- <span id="farmers">0</span></button>
+
+    <script src="script.js"></script>
+</body>
+</html>
