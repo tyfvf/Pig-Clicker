@@ -87,3 +87,13 @@
     -ms-user-select: none;
     user-select: none;
 }
+
+#upgradeContainer img {
+    height: 64px;
+    width: 64px;
+    cursor: pointer;
+}
+
+#upgradeContainer img:hover {
+    transform: scale(1.10);
+}
