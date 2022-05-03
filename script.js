@@ -1,116 +1,141 @@
-let bacons = 0
-let clickingPower = 1
+let game = {
+    bacons: 0,
+    totalBacons: 0,
+    totalClicks: 0,
+    clickValue: 1,
+    version: 0.000,
 
-let cursorCost = 15
-let cursors = 0
-let panCost = 100
-let pans = 0
-let farmerCost = 1000
-let farmers = 0
+    addBacons: function(amount) {
+        this.bacons += amount
+        this.totalBacons += amount
+        this.totalClicks ++
+        display.updateBacons()
+    },
 
-function buyCursor() {
-    if (bacons >= cursorCost) {
-        bacons -= cursorCost
-        cursors ++
-        cursorCost = Math.round(cursorCost * 1.15)
-
-        document.getElementById("bacons").textContent = bacons
-        document.getElementById("cursorcost").textContent = cursorCost
-        document.getElementById("cursors").textContent = cursors
-        updateBaconsPerSecond()
+    getBaconsPerSecond: function() {
+        let baconsPerSecond = 0
+        for (i = 0; i < building.name.length; i++) {
+            baconsPerSecond += building.income[i] * building.count[i]
+        }
+        return baconsPerSecond
     }
 }
 
-function buyPan() {
-    if (bacons >= panCost) {
-        bacons -= panCost
-        pans ++
-        panCost = Math.round(panCost * 1.15)
+let building = {
+    name: [
+        'Cursor',
+        'Pan',
+        'Farmer',
+        'Factory'
+    ],
+    image: [
+        'cursor.png',
+        'pan.png',
+        'farmer.png',
+        'factory.png'
+    ],
+    count: [
+        0,
+        0,
+        0,
+        0
+    ],
+    income: [
+        1,
+        5,
+        50,
+        125
+    ],
+    cost: [
+        15,
+        100,
+        1000,
+        9999
+    ],
 
-        document.getElementById("bacons").textContent = bacons
-        document.getElementById("pancost").textContent = panCost
-        document.getElementById("pans").textContent = pans
-        updateBaconsPerSecond()
+    purchase: function(index) {
+        if (game.bacons >= this.cost[index]) {
+            game.bacons -= this.cost[index]
+            this.count[index]++
+            this.cost[index] = Math.round(this.cost[index] * 1.15)
+            display.updateBacons()
+            display.updateShop()
+        }
     }
 }
 
-function buyFarmer() {
-    if (bacons >= farmerCost) {
-        bacons -= farmerCost
-        farmers ++
-        farmerCost = Math.round(farmerCost * 1.15)
+let display = {
+    updateBacons: function() {
+        document.getElementById('bacons').textContent = game.bacons
+        document.getElementById('baconspersecond').textContent = game.getBaconsPerSecond()
+        document.title = game.bacons + ' bacons - Pig Clicker'
+    },
 
-        document.getElementById("bacons").textContent = bacons
-        document.getElementById("farmercost").textContent = farmerCost
-        document.getElementById("farmers").textContent = farmers
-        updateBaconsPerSecond()
+    updateShop: function() {
+        document.getElementById('shopContainer').innerHTML = ""
+        for (i = 0; i < building.name.length; i++) {
+            document.getElementById('shopContainer').innerHTML += '<table class="shopButton" onclick="building.purchase('+i+')"><tr><td id="image"><img src="images/'+building.image[i]+'" alt="a photo of a cursor, click to buy"></td><td id="nameAndCost"><p>'+building.name[i]+'</p><p><span>'+building.cost[i]+'</span> bacons</p></td><td id="amount"><span>'+building.count[i]+'</span></td></tr></table>'
+        }
     }
-}
-
-function addBacons(amount) {
-    bacons += amount
-    document.getElementById("bacons").textContent = bacons
-}
-
-function updateBaconsPerSecond() {
-    baconsPerSecond = cursors + pans * 5 + farmers * 50
-    document.getElementById('baconspersecond').textContent = baconsPerSecond
 }
 
 function saveGame() {
     let gameSave = {
-        bacons: bacons,
-        clickingPower: clickingPower,
-        cursorCost: cursorCost,
-        cursors: cursors,
-        panCost: panCost,
-        pans: pans,
-        farmerCost: farmerCost,
-        farmers: farmers
+        bacons: game.bacons,
+        totalBacons: game.totalBacons,
+        totalClicks: game.totalClicks,
+        clickValue: game.clickValue,
+        version: game.version,
+        buildingCount: building.count,
+        buildingIncome: building.income,
+        buildingCost: building.cost
     }
-
     localStorage.setItem('gameSave', JSON.stringify(gameSave))
 }
 
 function loadGame() {
     let savedGame = JSON.parse(localStorage.getItem('gameSave'))
-    if (typeof savedGame.bacons !== 'undefined') bacons = savedGame.bacons
-    if (typeof savedGame.clickingPower !== 'undefined') clickingPower = savedGame.clickingPower
-    if (typeof savedGame.cursorCost !== 'undefined') cursorCost = savedGame.cursorCost
-    if (typeof savedGame.cursors !== 'undefined') cursors = savedGame.cursors
-    if (typeof savedGame.panCost !== 'undefined') panCost = savedGame.panCost
-    if (typeof savedGame.pans !== 'undefined') pans = savedGame.pans
-    if (typeof savedGame.farmerCost !== 'undefined') farmerCost = savedGame.farmerCost
-    if (typeof savedGame.farmers !== 'undefined') farmers = savedGame.farmers
+    if (localStorage.getItem('gameSave') !== null) {
+        if (typeof savedGame.bacons !== 'undefined') game.bacons = savedGame.bacons
+        if (typeof savedGame.totalBacons !== 'undefined') game.totalBacons = savedGame.totalBacons
+        if (typeof savedGame.totalClicks !== 'undefined') game.totalClicks = savedGame.totalClicks
+        if (typeof savedGame.clickValue !== 'undefined') game.clickValue = savedGame.clickValue
+        if (typeof savedGame.buildingCount !== 'undefined') {
+            for (i = 0; i < savedGame.buildingCount.length; i++) {
+                building.count[i] = savedGame.buildingCount[i]
+            }
+        }
+        if (typeof savedGame.buildingIncome !== 'undefined') {
+            for (i = 0; i < savedGame.buildingIncome.length; i++) {
+                building.income[i] = savedGame.buildingIncome[i]
+            }
+        }
+        if (typeof savedGame.buildingCost !== 'undefined') {
+            for (i = 0; i < savedGame.buildingCost.length; i++) {
+                building.cost[i] = savedGame.buildingCost[i]
+            }
+        }
+    }
 }
 
 function resetGame() {
-    if (confirm('Are you sure you want to reset your game? ')){
+    if (confirm('Are you sure you want to reset your game?')) {
         let gameSave = {}
-        localStorage.setItem('gameSave', JSON.stringify(gameSave))
+        localStorage.setItem("gameSave", JSON.stringify(gameSave))
         location.reload()
     }
 }
 
-window.onload = function () {
+window.onload = function() {
     loadGame()
-    updateBaconsPerSecond()
-    document.getElementById("bacons").textContent = bacons
-    document.getElementById("cursorcost").textContent = cursorCost
-    document.getElementById("cursors").textContent = cursors
-    document.getElementById("pancost").textContent = panCost
-    document.getElementById("pans").textContent = pans
-    document.getElementById("farmercost").textContent = farmerCost
-    document.getElementById("farmers").textContent = farmers
+    display.updateBacons()
+    display.updateShop()
 }
 
-setInterval(function () {
-    bacons += cursors
-    bacons += pans * 5
-    bacons += farmers * 50
-    document.getElementById("bacons").textContent = bacons
-
-    document.title = bacons + ' bacons - Pig Clicker'
+setInterval(function() {
+    game.bacons += game.getBaconsPerSecond()
+    game.totalBacons += game.getBaconsPerSecond()
+    display.updateBacons()
 }, 1000) // 1 sec
 
 setInterval(function () {
@@ -118,7 +143,7 @@ setInterval(function () {
 }, 30000) // 30 sec
 
 document.addEventListener('keydown', function(event) {
-    if (event.ctrlKey && event.key == 's') { //ctrl + s
+    if (event.ctrlKey && event.key == 's') { // ctrl + s
         event.preventDefault()
         saveGame()
     }
