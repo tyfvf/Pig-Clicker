@@ -132,6 +132,48 @@ let upgrade = {
     }
 }
 
+let achievement = {
+    name: [
+        'A Humble Start',
+        'Click',
+        'The beginning of something'
+    ],
+    description: [
+        'Buy 1 cursor',
+        'Click the pig 1 time',
+        'Gather 1 bacon'
+    ],
+    image: [
+        'humble-start.png',
+        'click.png',
+        'bacon.png'
+    ],
+    type: [
+        'building',
+        'click',
+        'bacons'
+    ],
+    requirement: [
+        1,
+        1,
+        1
+    ],
+    objectIndex: [
+        0,
+        -1,
+        -1
+    ],
+    awarded: [
+        false,
+        false,
+        false
+    ],
+
+    earn: function(index) {
+        this.awarded[index] = true
+    }
+}
+
 let display = {
     updateBacons: function() {
         document.getElementById('bacons').textContent = game.bacons
@@ -151,10 +193,19 @@ let display = {
         for (i = 0; i < upgrade.name.length; i++) {
             if (!upgrade.purchased[i]) {
                 if (upgrade.type[i] == 'building' && building.count[upgrade.buildingIndex[i]] >= upgrade.requirement[i]) {
-                    document.getElementById('upgradeContainer').innerHTML += '<img src="images/'+upgrade.image[i]+'" title="'+upgrade.name[i]+' &#10; '+upgrade.description[i]+' &#10; ('+upgrade.cost[i]+' bacons)" onclick="upgrade.purchase('+i+')">'
+                    document.getElementById('upgradeContainer').innerHTML += '<img src="images/'+upgrade.image[i]+'" title="'+upgrade.name[i]+'&#10;'+upgrade.description[i]+'&#10;('+upgrade.cost[i]+' bacons)" onclick="upgrade.purchase('+i+')">'
                 } else if (upgrade.type[i] == 'click' && game.totalClicks >= upgrade.requirement[i]) {
-                    document.getElementById('upgradeContainer').innerHTML += '<img src="images/'+upgrade.image[i]+'" title="'+upgrade.name[i]+' &#10; '+upgrade.description[i]+' &#10; ('+upgrade.cost[i]+' bacons)" onclick="upgrade.purchase('+i+')">'
+                    document.getElementById('upgradeContainer').innerHTML += '<img src="images/'+upgrade.image[i]+'" title="'+upgrade.name[i]+'&#10;'+upgrade.description[i]+'&#10;('+upgrade.cost[i]+' bacons)" onclick="upgrade.purchase('+i+')">'
                 }
+            }
+        }
+    },
+
+    updateAchievements: function() {
+        document.getElementById('achievementContainer').innerHTML = ""
+        for (i = 0; i < achievement.name.length; i++) {
+            if (achievement.awarded[i]) {
+                document.getElementById('achievementContainer').innerHTML += '<img src="images/'+achievement.image[i]+'" title="'+achievement.name[i]+'&#10;'+achievement.description[i]+'">'
             }
         }
     }
@@ -170,7 +221,8 @@ function saveGame() {
         buildingCount: building.count,
         buildingIncome: building.income,
         buildingCost: building.cost,
-        upgradePurchased: upgrade.purchased
+        upgradePurchased: upgrade.purchased,
+        achievementAwarded: achievement.awarded 
     }
     localStorage.setItem('gameSave', JSON.stringify(gameSave))
 }
@@ -202,6 +254,11 @@ function loadGame() {
                 upgrade.purchased[i] = savedGame.upgradePurchased[i]
             }
         }
+        if (typeof savedGame.achievementAwarded !== 'undefined') {
+            for (i = 0; i < savedGame.achievementAwarded.length; i++) {
+                achievement.awarded[i] = savedGame.achievementAwarded[i]
+            }
+        }
     }
 }
 
@@ -222,13 +279,20 @@ window.onload = function() {
     loadGame()
     display.updateBacons()
     display.updateUpgrades()
+    display.updateAchievements()
     display.updateShop()
 }
 
 setInterval(function() {
+    for (i = 0; i < achievement.name.length; i++) {
+        if (achievement.type[i] == 'bacons' && game.totalBacons >= achievement.requirement[i]) achievement.earn(i)
+        else if (achievement.type[i] == 'click' && game.totalClicks >= achievement.requirement[i]) achievement.earn(i)
+        else if (achievement.type[i] == 'building' && building.count[achievement.objectIndex[i]] >= achievement.requirement[i]) achievement.earn(i)
+    }
     game.bacons += game.getBaconsPerSecond()
     game.totalBacons += game.getBaconsPerSecond()
     display.updateBacons()
+    display.updateAchievements()
 }, 1000) // 1 sec
 
 setInterval(function() {

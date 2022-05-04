@@ -97,3 +97,8 @@
 #upgradeContainer img:hover {
     transform: scale(1.10);
 }
+
+#achievementContainer img {
+    height: 64px;
+    width: 64px;
+}
