@@ -19,7 +19,7 @@
     font-weight: 600;
 }
 
-.clickerContainer img {
+/* .clickerContainer img {
     position: relative;
     cursor: pointer;
     transition: all .2s ease-in-out;
@@ -31,6 +31,33 @@
 
 .clickerContainer img:active {
     transform: scale(99%);
+} */
+
+#clicker {
+    background-image: url('./images/pig.png');
+    background-size: contain;
+    height: 300px;
+    width: 300px;
+    position: relative;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+#clicker:hover {
+    transform: scale(110%);
+}
+
+#clicker:active {
+    transform: scale(90%);
+}
+
+#clicker > .number {
+    z-index: 99;
+    font-size: 30px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #000;
+    position: absolute;
 }
 
 .shopButton {

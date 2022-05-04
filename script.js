@@ -270,10 +270,55 @@ function resetGame() {
     }
 }
 
-document.getElementById('clicker').addEventListener('click', function() {
+document.getElementById('clicker').addEventListener('click', function(event) {
     game.totalClicks++
     game.addBacons(game.clickValue)
+
+    createNumberOnClick(event)
 }, false)
+
+function createNumberOnClick(event) {
+    // Grab the clicker
+    let clicker = document.getElementById('clicker')
+
+    //Grab mouse postion
+    let clickerOffset = clicker.getBoundingClientRect()
+    let position = {
+        x: event.pageX - clickerOffset.left + randomNumber(-3, 3),
+        y: event.pageY - clickerOffset.top
+    }
+
+    // Create the number with img
+    let element = document.createElement('div')
+    element.textContent = '+' + game.clickValue
+    element.innerHTML += '<img src="images/bacon.png" height="24px" width="24px">'
+    element.classList.add('number', 'unselectable')
+    element.style.left = position.x + 'px'
+    element.style.top = position.y + 'px'
+
+    //Add the number to the clicker
+    clicker.appendChild(element)
+
+    // Slowly rise and fade out element
+    let opacity = 1
+    let movementInverval = window.setInterval(function(){
+        if (typeof element == 'undefined' && element == null) clearInterval(movementInverval)
+
+        position.y --
+        element.style.top = position.y + 'px'
+
+        element.style.opacity = opacity
+
+        opacity -= 25 / 3000
+        if (opacity <= 0.1) {
+            element.remove()
+        }
+    }, 10)
+}
+
+function randomNumber(min, max) {
+    return Math.round(Math.random() * (max - min) + min)
+}
 
 window.onload = function() {
     loadGame()
