@@ -1,7 +1,9 @@
 # Pig-Clicker
-A clicker game made in javascript.
+A clicker game made with love ❤ and javascript 💻.
 
-Kinda a copy/inspiration from Cookie Clicker, but using my JS skills.
+Kinda of a copy/inspiration from Cookie Clicker, but using my JS skills.
+
+Test the game ▶ [here](https://tyfvf.github.io/Pig-Clicker/).
 
 #
 
