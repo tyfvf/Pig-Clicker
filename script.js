@@ -338,6 +338,7 @@ let upgrade = {
 
                 display.updateUpgrades()
                 display.updateBacons()
+                display.updateShop()
             } else if (this.type[index] == 'click' && game.totalClicks >= this.requirement[index]) {
                 game.bacons -= this.cost[index]
                 game.clickValue *= this.bonus[index]
@@ -486,7 +487,7 @@ let display = {
     updateShop: function() {
         document.getElementById('shopContainer').innerHTML = ""
         for (i = 0; i < building.name.length; i++) {
-            document.getElementById('shopContainer').innerHTML += '<table class="shopButton" onclick="building.purchase('+i+')"><tr><td id="image"><img src="images/buildings/'+building.image[i]+'" alt="a photo of a cursor, click to buy"></td><td id="nameAndCost"><p>'+building.name[i]+'</p><p><span>'+building.cost[i]+'</span> bacons</p></td><td id="amount"><span>'+building.count[i]+'</span></td></tr></table>'
+            document.getElementById('shopContainer').innerHTML += '<table class="shopButton" onclick="building.purchase('+i+')"><tr title="Single building income: '+building.income[i]+'&#10;All buildings income: '+building.count[i] * building.income[i]+'"><td id="image"><img src="images/buildings/'+building.image[i]+'" alt="a photo of a cursor, click to buy"></td><td id="nameAndCost"><p>'+building.name[i]+'</p><p><span>'+building.cost[i]+'</span> bacons</p></td><td id="amount"><span>'+building.count[i]+'</span></td></tr></table>'
         }
     },
 
