@@ -194,31 +194,31 @@ let upgrade = {
         'building'
     ],
     cost: [
-        '350',
-        '4000',
-        '50000',
-        '600000',
-        '77777777',
-        '300',
-        '3000',
-        '30000',
-        '4000',
-        '40000',
-        '400000',
-        '50000',
-        '500000',
-        '5000000',
-        '600000',
-        '6000000',
-        '60000000',
-        '11111',
-        '22222222',
-        '3333333333',
-        '7000000',
-        '70000000',
-        '700000000',
-        '8000000000',
-        '99999999999',
+        350,
+        4000,
+        50000,
+        600000,
+        77777777,
+        300,
+        3000,
+        30000,
+        4000,
+        40000,
+        400000,
+        50000,
+        500000,
+        5000000,
+        600000,
+        6000000,
+        60000000,
+        11111,
+        22222222,
+        3333333333,
+        7000000,
+        70000000,
+        700000000,
+        8000000000,
+        99999999999,
     ],
     buildingIndex: [
         -1,
@@ -374,17 +374,17 @@ let achievement = {
         'Buy 1 Laws and Legislation',
         'Buy 1 Javascript Console',
         'Click the pig 1 time',
-        'Click the pig 1000 time',
-        'Click the pig 10000 time',
-        'Click the pig 100000 time',
-        'Click the pig 1000000 time',
+        'Click the pig 1,000 time',
+        'Click the pig 10,000 time',
+        'Click the pig 100,000 time',
+        'Click the pig 1,000,000 time',
         'Gather 1 bacon',
-        'Gather 1000 bacons',
-        'Gather 100000 bacons',
-        'Gather 1000000 bacons',
-        'Gather 100000000 bacons',
-        'Gather 1000000000 bacons',
-        'Gather 99999999999 bacons'
+        'Gather 1,000 bacons',
+        'Gather 100,000 bacons',
+        'Gather 1,000,000 bacons',
+        'Gather 100,000,000 bacons',
+        'Gather 1,000,000,000 bacons',
+        'Gather 99,999,999,999 bacons'
     ],
     image: [
         'humble-start.png',
@@ -479,15 +479,15 @@ let achievement = {
 
 let display = {
     updateBacons: function() {
-        document.getElementById('bacons').textContent = game.bacons
-        document.getElementById('baconspersecond').textContent = game.getBaconsPerSecond()
-        document.title = game.bacons + ' bacons - Pig Clicker'
+        document.getElementById('bacons').textContent = game.bacons.toLocaleString('en-US')
+        document.getElementById('baconspersecond').textContent = game.getBaconsPerSecond().toLocaleString('en-US')
+        document.title = game.bacons.toLocaleString('en-US') + ' bacons - Pig Clicker'
     },
 
     updateShop: function() {
         document.getElementById('shopContainer').innerHTML = ""
         for (i = 0; i < building.name.length; i++) {
-            document.getElementById('shopContainer').innerHTML += '<table class="shopButton" onclick="building.purchase('+i+')"><tr title="Single building income: '+building.income[i]+'&#10;All buildings income: '+building.count[i] * building.income[i]+'"><td id="image"><img src="images/buildings/'+building.image[i]+'" alt="a photo of a cursor, click to buy"></td><td id="nameAndCost"><p>'+building.name[i]+'</p><p><span>'+building.cost[i]+'</span> bacons</p></td><td id="amount"><span>'+building.count[i]+'</span></td></tr></table>'
+            document.getElementById('shopContainer').innerHTML += '<table class="shopButton" onclick="building.purchase('+i+')"><tr title="Single building income: '+building.income[i].toLocaleString('en-US')+'&#10;All owned buildings income: '+(building.count[i] * building.income[i]).toLocaleString('en-US')+'"><td id="image"><img src="images/buildings/'+building.image[i]+'" alt="a photo of a cursor, click to buy"></td><td id="nameAndCost"><p>'+building.name[i]+'</p><p><span>'+building.cost[i].toLocaleString('en-US')+'</span> bacons</p></td><td id="amount"><span>'+building.count[i].toLocaleString('en-US')+'</span></td></tr></table>'
         }
     },
 
@@ -496,9 +496,9 @@ let display = {
         for (i = 0; i < upgrade.name.length; i++) {
             if (!upgrade.purchased[i]) {
                 if (upgrade.type[i] == 'building' && building.count[upgrade.buildingIndex[i]] >= upgrade.requirement[i]) {
-                    document.getElementById('upgradeContainer').innerHTML += '<img src="images/upgrades/'+upgrade.image[i]+'" title="'+upgrade.name[i]+'&#10;'+upgrade.description[i]+'&#10;('+upgrade.cost[i]+' bacons)" onclick="upgrade.purchase('+i+')">'
+                    document.getElementById('upgradeContainer').innerHTML += '<img src="images/upgrades/'+upgrade.image[i]+'" title="'+upgrade.name[i]+'&#10;'+upgrade.description[i]+'&#10;('+upgrade.cost[i].toLocaleString('en-US')+' bacons)" onclick="upgrade.purchase('+i+')">'
                 } else if (upgrade.type[i] == 'click' && game.totalClicks >= upgrade.requirement[i]) {
-                    document.getElementById('upgradeContainer').innerHTML += '<img src="images/upgrades/'+upgrade.image[i]+'" title="'+upgrade.name[i]+'&#10;'+upgrade.description[i]+'&#10;('+upgrade.cost[i]+' bacons)" onclick="upgrade.purchase('+i+')">'
+                    document.getElementById('upgradeContainer').innerHTML += '<img src="images/upgrades/'+upgrade.image[i]+'" title="'+upgrade.name[i]+'&#10;'+upgrade.description[i]+'&#10;('+upgrade.cost[i].toLocaleString('en-US')+' bacons)" onclick="upgrade.purchase('+i+')">'
                 }
             }
         }
