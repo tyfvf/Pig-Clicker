@@ -487,7 +487,7 @@ let display = {
     updateShop: function() {
         document.getElementById('shopContainer').innerHTML = ""
         for (i = 0; i < building.name.length; i++) {
-            document.getElementById('shopContainer').innerHTML += '<table class="shopButton" onclick="building.purchase('+i+')"><tr title="Single building income: '+building.income[i].toLocaleString('en-US')+'&#10;All owned buildings income: '+(building.count[i] * building.income[i]).toLocaleString('en-US')+'&#10;'+(((building.count[i] * building.income[i]) / document.getElementById('baconspersecond').textContent) * 100).toFixed(2)+'%"><td id="image"><img src="images/buildings/'+building.image[i]+'" alt="a photo of a cursor, click to buy"></td><td id="nameAndCost"><p>'+building.name[i]+'</p><p><span>'+building.cost[i].toLocaleString('en-US')+'</span> bacons</p></td><td id="amount"><span>'+building.count[i].toLocaleString('en-US')+'</span></td></tr></table>'
+            document.getElementById('shopContainer').innerHTML += '<table class="shopButton" onclick="building.purchase('+i+')"><tr title="Single building income: '+building.income[i].toLocaleString('en-US')+'&#10;All owned buildings income: '+(building.count[i] * building.income[i]).toLocaleString('en-US')+'&#10;'+(((building.count[i] * building.income[i]) / document.getElementById('baconspersecond').textContent) * 100).toFixed(2)+'%"><td id="image"><img src="images/buildings/'+building.image[i]+'" alt="a photo of a cursor, click to buy"></td><td id="nameAndCost"><p>'+building.name[i]+'</p><div><img src="images/achievements/bacon.png" id="cost"><span>'+building.cost[i].toLocaleString('en-US')+'</span></div></td><td id="amount"><span>'+building.count[i].toLocaleString('en-US')+'</span></td></tr></table>'
         }
     },
 
